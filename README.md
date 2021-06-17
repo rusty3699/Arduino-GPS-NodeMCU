@@ -16,3 +16,6 @@ Wiring for NODEMCU  :- GND TO GND, D2 to TX, D1 to RX, 3.3v to VCC
 
 
 Upload :- Select the appropriate Board and upload the code.
+
+
+Note :- GPS module may take time to have a successful connection. In this case, look out for stable blinking of LED light on GPS module, blinking every 1s. May change from models to models. 
