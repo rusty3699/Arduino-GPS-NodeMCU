@@ -5,8 +5,8 @@ Schematics would be updated soon
 
 */
 #include <TinyGPS++.h>//GPS library
-#include <SoftwareSerial.h>
-#include <ESP8266WiFi.h>
+#include <SoftwareSerial.h>//serialCommunication
+#include <ESP8266WiFi.h>//ESP
 
 TinyGPSPlus gps;  // The TinyGPS++ object
 
@@ -15,27 +15,25 @@ SoftwareSerial ss(4, 5); // The serial connection to the GPS device
 const char* ssid = "//add you Wifi SSID password ";
 const char* password = "//add your password";
 
-//const char* ssid = "rusty3699_HOME_2.4";
-//const char* password = "riviera3699";
 
-
+//Variable Declaration
 float latitude , longitude;
 int year , month , date, hour , minute , second;
 String date_str , time_str , lat_str , lng_str;
 int pm;
 
-WiFiServer server(80);
+WiFiServer server(80);//port 80
 void setup()
 {
-  Serial.begin(115200);
-  ss.begin(9600);
+  Serial.begin(115200);//baud
+  ss.begin(9600);//baud
   Serial.println();
   Serial.print("Connecting to ");
   Serial.println(ssid);
 
   WiFi.begin(ssid, password);
 
-  while (WiFi.status() != WL_CONNECTED)
+  while (WiFi.status() != WL_CONNECTED)//check status
   {
     delay(500);
     Serial.print(".");
@@ -48,9 +46,10 @@ void setup()
 
   // Print the IP address
   Serial.println(WiFi.localIP());
+  //if the serial monitor doesnt show up with the IP, it can been by using netstat -a command in cmd
 
 }
-
+//checking, getting coords from gps
 void loop()
 {
 
@@ -144,7 +143,7 @@ void loop()
     return;
   }
 
-  // Prepare the response
+  //Building a small UI using HTML
   String s = "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n <!DOCTYPE html> <html> <head> <title>GPS Interfacing Project Msc CS</title> <style>";
   s += "a:link {background-color: RED;text-decoration: none;}";
   s += "table, th, td {border: 1px solid black;} </style> </head> <body> <h1  style=";
@@ -164,7 +163,7 @@ void loop()
   s += time_str;
   s += "</td>  </tr> </table> ";
 
-
+//checking if the location is Valid and adding the lat and long to the maps.google.com
   if (gps.location.isValid())
   {
      s += "<p align=center><a style=""color:RED;font-size:125%;"" href=""http://maps.google.com/maps?&z=15&mrt=yp&t=k&q=";
